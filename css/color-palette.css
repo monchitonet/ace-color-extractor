@@ -1,0 +1,20 @@
+/* Styles for the color palette container */
+.color-palette-wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin-bottom: 20px;
+    gap: 5px;
+}
+
+/* Styles for individual color squares */
+.color-square {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 5px;
+    border: 1px solid #ddd;
+}
