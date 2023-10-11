@@ -2,7 +2,7 @@
 /*
 Plugin Name: ACE Color Extractor
 Description: Extract and display the most used colors from post thumbnails.
-Version: 1.0
+Version: 1.1.0
 Author: LogosNicas x AI
 Author URI: https://logosnicas.com/
 License: GPL v2 or later
@@ -176,12 +176,63 @@ function extract_and_display_color_palette($content)
     return $content;
 }
 
+//Add the color_similarity_cie76 and rgb_to_lab functions
+function color_similarity_cie76($color1, $color2)
+{
+    // Convert RGB to Lab color space
+    $lab1 = rgb_to_lab($color1);
+    $lab2 = rgb_to_lab($color2);
+
+    // Calculate the differences in L*, a*, and b* values
+    $deltaL = $lab1['L'] - $lab2['L'];
+    $deltaA = $lab1['a'] - $lab2['a'];
+    $deltaB = $lab1['b'] - $lab2['b'];
+
+    // Calculate the CIE76 color difference
+    return sqrt($deltaL * $deltaL + $deltaA * $deltaA + $deltaB * $deltaB);
+}
+
+// Helper function to convert RGB to Lab color space
+function rgb_to_lab($color)
+{
+    $r = $color['red'] / 255.0;
+    $g = $color['green'] / 255.0;
+    $b = $color['blue'] / 255.0;
+
+    // Convert RGB to XYZ color space
+    $r = ($r > 0.04045) ? pow(($r + 0.055) / 1.055, 2.4) : $r / 12.92;
+    $g = ($g > 0.04045) ? pow(($g + 0.055) / 1.055, 2.4) : $g / 12.92;
+    $b = ($b > 0.04045) ? pow(($b + 0.055) / 1.055, 2.4) : $b / 12.92;
+
+    $r *= 100.0;
+    $g *= 100.0;
+    $b *= 100.0;
+
+    $x = $r * 0.4124564 + $g * 0.3575761 + $b * 0.1804375;
+    $y = $r * 0.2126729 + $g * 0.7151522 + $b * 0.0721750;
+    $z = $r * 0.0193339 + $g * 0.1191920 + $b * 0.9503041;
+
+    // Convert XYZ to Lab color space
+    $x /= 95.047;
+    $y /= 100.000;
+    $z /= 108.883;
+
+    $x = ($x > 0.008856) ? pow($x, 1.0 / 3.0) : (903.3 * $x + 16.0) / 116.0;
+    $y = ($y > 0.008856) ? pow($y, 1.0 / 3.0) : (903.3 * $y + 16.0) / 116.0;
+    $z = ($z > 0.008856) ? pow($z, 1.0 / 3.0) : (903.3 * $z + 16.0) / 116.0;
+
+    $lab['L'] = max(0.0, min(100.0, 116.0 * $y - 16.0));
+    $lab['a'] = max(-128.0, min(127.0, 500.0 * ($x - $y)));
+    $lab['b'] = max(-128.0, min(127.0, 200.0 * ($y - $z)));
+
+    return $lab;
+
+}
+
 // Define a function to calculate the similarity between two colors
 function color_similarity($color1, $color2)
 {
-    return abs($color1["red"] - $color2["red"]) +
-        abs($color1["green"] - $color2["green"]) +
-        abs($color1["blue"] - $color2["blue"]);
+    return color_similarity_cie76($color1, $color2);
 }
 
 //Add a shortcode for the function
