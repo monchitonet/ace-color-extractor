@@ -1,0 +1,35 @@
+# Copyright (C) 2023 LogosNicas x AI
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: ACE Color Extractor 1.1.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ace-color-extractor\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2023-10-14T17:32:44+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.8.1\n"
+"X-Domain: ace-color-extractor\n"
+
+#. Plugin Name of the plugin
+msgid "ACE Color Extractor"
+msgstr ""
+
+#. Description of the plugin
+msgid "Extract and display the most used colors from post thumbnails."
+msgstr ""
+
+#. Author of the plugin
+msgid "LogosNicas x AI"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://logosnicas.com/"
+msgstr ""
+
+#: ace-color-extractor.php:215
+msgid "Download Palette (SVG)"
+msgstr ""
