@@ -2,14 +2,45 @@
 /*
 Plugin Name: ACE Color Extractor
 Description: Extract and display the most used colors from post thumbnails.
-Version: 1.1.0
+Version: 1.1.1
 Author: LogosNicas x AI
 Author URI: https://logosnicas.com/
+Text Domain: ace-color-extractor
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
 
-// Define the extract_colors_from_image() function here.
+/**
+ * Initializes the localization (internationalization) of the plugin.
+ *
+ * This function loads the translation files for the plugin, enabling it to be translated
+ * into different languages.
+ *
+ * @since 1.1.1
+ */
+function ace_init() {
+    // Define the relative path to the plugin's language directory.
+    $plugin_rel_path = basename(dirname(__FILE__)) . '/languages'; // Relative to WP_PLUGIN_DIR
+
+    // Load the plugin text domain for localization.
+    load_plugin_textdomain('ace-color-extractor', false, $plugin_rel_path);
+}
+
+// Hook into the 'plugins_loaded' action to execute the 'ace_init' function.
+add_action('plugins_loaded', 'ace_init');
+
+
+/**
+ * Extract the most used colors from an image.
+ *
+ * @since 1.0.0
+ *
+ * @param string $image_url               The URL of the image.
+ * @param int    $max_colors              Maximum number of colors to extract.
+ * @param int    $color_similarity_threshold Similarity threshold for colors.
+ *
+ * @return array An array of hexadecimal color values.
+ */
 function extract_colors_from_image(
     $image_url,
     $max_colors = 5,
@@ -103,7 +134,11 @@ function extract_colors_from_image(
     return $hexColors;
 }
 
-// Enqueue CSS
+/**
+ * Enqueue CSS for color palette.
+ *
+ * @since 1.0.0
+ */
 function enqueue_color_palette_styles()
 {
     wp_enqueue_style(
@@ -114,7 +149,11 @@ function enqueue_color_palette_styles()
 
 add_action("wp_enqueue_scripts", "enqueue_color_palette_styles");
 
-// Enqueue JavaScript for SVG download with filename
+/**
+ * Enqueue JavaScript for SVG download with post slug.
+ *
+ * @since 1.0.0
+ */
 function enqueue_svg_download_script()
 {
     wp_enqueue_script(
@@ -125,16 +164,32 @@ function enqueue_svg_download_script()
         true
     );
 
-    // Pass the plugin URL and nonce to JavaScript
+    // Get the post slug
+    $post_slug = get_post_field('post_name', get_post());
+
+    // Pass the plugin URL, nonce, and post slug to JavaScript
     wp_localize_script("svg-download-script", "svgDownload", [
         "pluginUrl" => plugins_url("", __FILE__),
         "nonce" => wp_create_nonce("svg-download-nonce"),
+        "postSlug" => $post_slug, // Pass the post slug to JavaScript
     ]);
 }
 
 add_action("wp_enqueue_scripts", "enqueue_svg_download_script");
 
-// Modify the existing extract_and_display_color_palette() function
+/**
+ * Modify the post content to extract and display a color palette and SVG download link.
+ *
+ * This function checks if the current post is a single post with a thumbnail (featured image).
+ * If so, it extracts the most used colors from the thumbnail, generates a color palette, and adds
+ * an SVG download link to the post content.
+ *
+ * @since 1.0.0
+ *
+ * @param string $content The content of the post.
+ *
+ * @return string The modified post content with the color palette and download link.
+ */
 function extract_and_display_color_palette($content)
 {
     global $post;
@@ -160,23 +215,34 @@ function extract_and_display_color_palette($content)
             }
             $color_palette_html .= "</div>";
 
-            // Create an SVG download link with the post title as the filename.
-            $post_title = get_the_title();
-            $svg_filename = sanitize_title_with_dashes($post_title) . ".svg"; // Sanitize and add .svg extension.
+            // Get the post slug.
+            $post_slug = sanitize_title_with_dashes($post->post_name);
+
+            // Create an SVG download link with the post slug as the filename.
+            $svg_filename = $post_slug . ".svg"; // Use post slug as the filename.
             $svg_download_link =
                 '<a href="#" class="svg-download-link" data-filename="' .
                 esc_attr($svg_filename) .
-                '">Download Palette (SVG)</a></div>';
+                '">' . __('Download Palette (SVG)', 'ace-color-extractor') . '</a></div>';
 
-            // Add the SVG download link.
-            $content = $color_palette_html . $svg_download_link . $content;
+           // Add the SVG download link.
+           $content = $color_palette_html . $svg_download_link . $content;
         }
     }
 
     return $content;
 }
 
-//Add the color_similarity_cie76 and rgb_to_lab functions
+/**
+ * Calculate the similarity between two colors in CIE76 color space.
+ *
+ * @since 1.1.0
+ *
+ * @param array $color1 The first color.
+ * @param array $color2 The second color.
+ *
+ * @return float The color similarity in CIE76 space.
+ */
 function color_similarity_cie76($color1, $color2)
 {
     // Convert RGB to Lab color space
@@ -192,7 +258,15 @@ function color_similarity_cie76($color1, $color2)
     return sqrt($deltaL * $deltaL + $deltaA * $deltaA + $deltaB * $deltaB);
 }
 
-// Helper function to convert RGB to Lab color space
+/**
+ * Helper function to convert RGB to Lab color space.
+ *
+ * @since 1.1.0
+ *
+ * @param array $color The color in RGB format.
+ *
+ * @return array The color in Lab format.
+ */
 function rgb_to_lab($color)
 {
     $r = $color['red'] / 255.0;
@@ -229,13 +303,31 @@ function rgb_to_lab($color)
 
 }
 
-// Define a function to calculate the similarity between two colors
+/**
+ * Calculate the similarity between two colors.
+ *
+ * @since 1.0.0
+ *
+ * @param array $color1 The first color.
+ * @param array $color2 The second color.
+ *
+ * @return float The color similarity.
+ */
 function color_similarity($color1, $color2)
 {
     return color_similarity_cie76($color1, $color2);
 }
 
-//Add a shortcode for the function
+/**
+ * Shortcode to display the color palette.
+ *
+ * @since 1.0.0
+ *
+ * @param array  $atts    Shortcode attributes.
+ * @param string $content The content inside the shortcode.
+ *
+ * @return string The color palette HTML.
+ */
 function display_color_palette_shortcode($atts, $content = null) {
     if (function_exists('extract_and_display_color_palette')) {
         $color_palette = extract_and_display_color_palette($content);

@@ -2,9 +2,9 @@
 Contributors: leogg
 Tags: color palette, svg
 Requires at least: 5.8
-Tested up to: 6.3.1
+Tested up to: 6.3.2
 Requires PHP: 5.6
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,12 @@ This will add both the palette and the download link to your post.
 * [Website](https://logosnicas.com)
 
 == Changelog ==
+
+= 1.1.1 =
+
+* Added better inline documentation.
+* Added support for internationalization.
+* Updated the code to properly detect the post slug and use it as the filename for the downloaded SVG.
 
 = 1.1.0 =
 * Improved color similarity calculation using the CIE76 (ΔE 1976) formula.
