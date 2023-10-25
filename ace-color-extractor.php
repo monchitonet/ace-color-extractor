@@ -2,13 +2,16 @@
 /*
 Plugin Name: ACE Color Extractor
 Description: Extract and display the most used colors from post thumbnails.
-Version: 1.1.1
+Version: 1.2.0
 Author: LogosNicas x AI
 Author URI: https://logosnicas.com/
 Text Domain: ace-color-extractor
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
+
+// Include the options page file
+require_once plugin_dir_path(__FILE__) . 'admin/options-page.php';
 
 /**
  * Initializes the localization (internationalization) of the plugin.
@@ -31,6 +34,36 @@ add_action('plugins_loaded', 'ace_init');
 
 
 /**
+ * Add a "Settings" link to the plugin's action links on the Plugins page.
+ *
+ * This function appends a "Settings" link with the correct URL for the plugin.
+ *
+ * @param array $links An array of existing plugin action links.
+ * @return array The modified array of action links.
+ *
+ * @since 1.2.0
+ */
+function add_settings_link($links) {
+    // Define the "Settings" link with the correct URL.
+    $settings_link = '<a href="options-general.php?page=ace-color-extractor-options">' . esc_html__('Settings', 'ace-color-extractor') . '</a';
+
+    // Add the "Settings" link to the action links array.
+    array_push($links, $settings_link);
+
+    return $links;
+}
+
+// Get the basename of the plugin file.
+$plugin = plugin_basename(__FILE__);
+
+// Check if the plugin basename contains 'ace-color-extractor/' to ensure it's the correct plugin.
+if (strpos($plugin, 'ace-color-extractor/') !== false) {
+    // Add the filter to modify the plugin's action links.
+    add_filter("plugin_action_links_$plugin", 'add_settings_link');
+}
+
+
+/**
  * Extract the most used colors from an image.
  *
  * @since 1.0.0
@@ -41,12 +74,11 @@ add_action('plugins_loaded', 'ace_init');
  *
  * @return array An array of hexadecimal color values.
  */
-function extract_colors_from_image(
-    $image_url,
-    $max_colors = 5,
-    $color_similarity_threshold = 80
-) {
-    // Function to extract the most used colors from an image.
+function extract_colors_from_image($image_url) {
+
+    // Fetch the values from options
+    $max_colors = get_option('max_colors', 5);
+    $color_similarity_threshold = get_option('color_similarity_threshold', 60);
 
     // Load the image
     $image = imagecreatefromstring(file_get_contents($image_url));
@@ -195,7 +227,7 @@ function extract_and_display_color_palette($content)
     global $post;
 
     // Check if this is a single post and has a thumbnail.
-    if (is_single() && has_post_thumbnail($post->ID)) {
+    if (is_single() || is_page() && has_post_thumbnail($post->ID)) {
         $thumbnail_id = get_post_thumbnail_id($post->ID);
         $thumbnail_url = wp_get_attachment_url($thumbnail_id);
 
@@ -206,10 +238,10 @@ function extract_and_display_color_palette($content)
         $colors = extract_colors_from_image($thumbnail_url, 5);
 
         if (!empty($colors)) {
-            $color_palette_html = '<div class="color-palette-wrapper"><div class="color-palette">';
+            $color_palette_html = '<div class="ace-color-palette-wrapper"><div class="ace-color-palette">';
             foreach ($colors as $color) {
                 $color_palette_html .=
-                    '<div class="color-square" style="background-color:' .
+                    '<div class="ace-color-square" style="background-color:' .
                     $color .
                     ';"></div>';
             }
