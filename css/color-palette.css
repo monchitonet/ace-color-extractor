@@ -1,5 +1,5 @@
 /* Styles for the color palette container */
-.color-palette-wrapper {
+.ace-color-palette-wrapper {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -11,10 +11,10 @@
 }
 
 /* Styles for individual color squares */
-.color-square {
+.ace-color-square {
     width: 20px;
     height: 20px;
     display: inline-block;
     margin-right: 5px;
-    border: 1px solid #ddd;
+    border: 1px solid #000;
 }

@@ -15,7 +15,11 @@ jQuery(document).ready(function($) {
          *
          * @type {string}
          */
-        var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20">';
+
+        var svgWidth = $('.color-square').length * 20; // Calculate the total width
+
+        var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + svgWidth + '" height="20">';
+        //var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20">';
 
         $('.color-square').each(function() {
             var color = $(this).css('background-color');
@@ -30,7 +34,7 @@ jQuery(document).ready(function($) {
             svg += '<rect x="' + x + '" width="20" height="20" fill="' + color + '" />';
         });
 
-        svg += '</svg';
+        svg += '</svg>';
 
         /**
          * Get the post slug from the localized script data.

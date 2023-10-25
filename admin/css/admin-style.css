@@ -1,0 +1,42 @@
+/* Admin styles */
+/**FORM**/
+.form-table  {
+    margin-top: 2rem;
+}
+
+.form-table th {
+    vertical-align: top;
+}
+
+.form-table td input {
+    width: 3rem;
+}
+
+.form-table td input[type=number]::-webkit-inner-spin-button,
+.form-table td input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+.form-table td p {
+    margin-block-start: 0.5em;
+    font-style: italic;
+}
+
+/**SLIDER**/
+.similarity-slider {
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.similarity-slider input {
+   min-width: 360px;
+}
+
+#slider-value {
+     font-weight: 700;
+}

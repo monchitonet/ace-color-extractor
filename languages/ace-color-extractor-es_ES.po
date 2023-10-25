@@ -1,12 +1,9 @@
-# Copyright (C) 2023 LogosNicas x AI
-# This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
 "Project-Id-Version: ACE Color Extractor 1.1.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ace-color-"
-"extractor\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ace-color-extractor\n"
 "POT-Creation-Date: 2023-10-14T17:32:44+00:00\n"
-"PO-Revision-Date: 2023-10-14 11:34-0600\n"
+"PO-Revision-Date: 2023-10-17 09:32-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -17,14 +14,13 @@ msgstr ""
 "X-Domain: ace-color-extractor\n"
 
 #. Plugin Name of the plugin
+#: admin/options-page.php:132 admin/options-page.php:133
 msgid "ACE Color Extractor"
 msgstr "ACE Color Extractor"
 
 #. Description of the plugin
 msgid "Extract and display the most used colors from post thumbnails."
-msgstr ""
-"Extrae y muestra los colores más utilizados de las miniaturas de las "
-"entradas."
+msgstr "Extrae y muestra los colores más utilizados de las miniaturas de las entradas."
 
 #. Author of the plugin
 msgid "LogosNicas x AI"
@@ -34,6 +30,34 @@ msgstr "LogosNicas x AI"
 msgid "https://logosnicas.com/"
 msgstr "https://logosnicas.com/"
 
-#: ace-color-extractor.php:215
+#: ace-color-extractor.php:258
 msgid "Download Palette (SVG)"
 msgstr "Bajar paleta (SVG)"
+
+#: admin/options-page.php:49
+msgid "ACE Color Extractor Options"
+msgstr "Opciones de ACE Color Extractor"
+
+#: admin/options-page.php:56
+msgid "Palette maximum colors"
+msgstr "Colores máximos de la paleta"
+
+#: admin/options-page.php:60
+msgid "Set the maximum number of colors to extract from the image (e.g., 5)."
+msgstr "Establezca el número máximo de colores a extraer de la imagen (por ejemplo, 5)."
+
+#: ace-color-extractor.php:48
+msgid "Settings"
+msgstr "Ajustes"
+
+#: admin/options-page.php:65
+msgid "Color Similarity Threshold"
+msgstr "Umbral de similitud de color"
+
+#: admin/options-page.php:72
+msgid "Set the similarity threshold for colors (0% to 100%) when extracting representative colors from the image."
+msgstr "Establezca el umbral de similitud para los colores (0% a 100%) al extraer colores representativos de la imagen."
+
+#: admin/options-page.php:76
+msgid "Save Changes"
+msgstr "Guardar Cambios"

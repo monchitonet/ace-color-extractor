@@ -4,7 +4,7 @@ Tags: color palette, svg
 Requires at least: 5.8
 Tested up to: 6.3.2
 Requires PHP: 5.6
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,7 +20,7 @@ You can add the color palette to your posts in two ways:
 
 // Display the color palette extracted by the plugin.
 if( function_exists('extract_and_display_color_palette')) {
-	$color_palette = extract_and_display_color_palette($content);
+	$color_palette = extract_and_display_color_palette('');
 	echo $color_palette;
 } else {
 	// do nothing
@@ -28,10 +28,18 @@ if( function_exists('extract_and_display_color_palette')) {
 
 This will add both the palette and the download link to your post.
 
+3. You can adjust the number of colors to extract from the image and the colors similarity threshold in the options page in Settings > ACE Color Extractor
+
 = Links =
 * [Website](https://logosnicas.com)
 
 == Changelog ==
+
+= 1.2.0 =
+
+* Added an options page to configure the plugin's settings.
+* Adjusted the width of the downloadable SVG file based on the number of color squares.
+* Code cleanup and other small fixes and additions.
 
 = 1.1.1 =
 
